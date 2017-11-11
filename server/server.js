@@ -1,6 +1,7 @@
+const WebSocket = require('ws');
 const fs = require('fs');
 const http = require('http');
-const WebSocket = require('ws');
+const path = require('path');
 
 class Server {
   constructor(port = 3000) {
@@ -45,15 +46,17 @@ class Server {
    * @param {http.ServerResponse} response Output will be flushed to this.
    */
   serveFile(filename, contentType, response) {
-    fs.readFile(`./client-dist/${filename}`, (err, content) => {
-      if (err) {
-        console.error(err);
-        serve404(response);
-        return;
-      }
-      response.writeHead(200, { 'Content-Type': contentType });
-      response.end(content, 'utf-8');
-    });
+    fs.readFile(
+      path.resolve(__dirname, `../client-dist/${filename}`),
+      (err, content) => {
+        if (err) {
+          console.error(err);
+          serve404(response);
+          return;
+        }
+        response.writeHead(200, { 'Content-Type': contentType });
+        response.end(content, 'utf-8');
+      });
   }
 
   stop() {
