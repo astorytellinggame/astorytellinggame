@@ -18,3 +18,8 @@ npm install
 npm test
 npm run test-inspect # To run with --inspect-brk
 ```
+
+Architecture
+------------
+
+ * [Server architecture](./docs/ARCHITECTURE.md)
