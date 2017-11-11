@@ -2,6 +2,10 @@
   "name": "astorytellinggame",
   "version": "0.0.1",
   "description": "A Storytelling Game.",
+  "scripts": {
+    "test": "mocha ./server/**/*_test.js",
+    "test-inspect": "mocha ./server/**/*_test.js --inspect-brk"
+  },
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -15,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/astorytellinggame/astorytellinggame/issues"
   },
-  "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme"
+  "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme",
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  }
 }
