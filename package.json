@@ -1,0 +1,19 @@
+{
+  "name": "astorytellinggame",
+  "version": "0.0.1",
+  "description": "A Storytelling Game.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/astorytellinggame/astorytellinggame.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "admin@astorytellinggame.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/astorytellinggame/astorytellinggame/issues"
+  },
+  "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme"
+}
