@@ -22,5 +22,8 @@
   "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme",
   "devDependencies": {
     "mocha": "^4.0.1"
+  },
+  "dependencies": {
+    "ws": "^3.3.1"
   }
 }
