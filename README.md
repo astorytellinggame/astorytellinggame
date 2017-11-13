@@ -15,8 +15,8 @@ Testing
 
 ```
 npm install
-npm test
-npm run test-inspect # To run with --inspect-brk
+npm test # Run without debugger
+npm run test-inspect # Run with debugger (--inspect-brk)
 ```
 
 Architecture
