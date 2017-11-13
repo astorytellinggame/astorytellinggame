@@ -23,6 +23,7 @@
   "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme",
   "devDependencies": {
     "mocha": "^4.0.1",
+    "sinon": "^4.1.2",
     "webpack": "^3.8.1"
   },
   "dependencies": {

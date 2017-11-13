@@ -1,8 +1,8 @@
+const Connection = require('./connection');
 const Server = require('./server');
-
+const WebSocket = require('ws');
 const assert = require('assert');
 const http = require('http');
-const WebSocket = require('ws');
 
 describe('Server', () => {
   let selfTidyingServer; // to force cleanup
@@ -68,5 +68,7 @@ describe('Server', () => {
         done();
       });
     });
+
+    // TODO: Add test for ws connections building a new Connection.
   });
 });
