@@ -4,8 +4,8 @@
   "description": "A Storytelling Game.",
   "scripts": {
     "server": "webpack client/index.js client-dist/bundle.js && DEBUG=1 node index.js",
-    "test": "jest --testMatch='**/*_test.js'",
-    "test-inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand --testMatch='**/*_test.js'"
+    "test": "webpack client/index.js client-dist/bundle.js && jest --testMatch='**/*_test.js'",
+    "test-inspect": "webpack client/index.js client-dist/bundle.js && node --inspect-brk ./node_modules/.bin/jest --runInBand --testMatch='**/*_test.js'"
   },
   "main": "index.js",
   "repository": {
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme",
   "devDependencies": {
     "jest": "^21.2.1",
+    "puppeteer": "^0.13.0",
     "sinon": "^4.1.2",
     "webpack": "^3.8.1"
   },
