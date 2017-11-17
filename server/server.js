@@ -41,6 +41,7 @@ class Server {
    * @private
    */
   handleWebSocketsConnection_(ws) {
+    process.env.DEBUG && console.log('Client connected');
     new Connection(ws);
   }
 
@@ -51,7 +52,7 @@ class Server {
    * @private
    */
   handleHttpRequest_(request, response) {
-    process.env.DEBUG && console.log(request.url);
+    process.env.DEBUG && console.log(`Serving static file request: ${request.url}`);
     switch(request.url) {
       case '/':
         this.serveFile_('index.html', 'text/html', response);
