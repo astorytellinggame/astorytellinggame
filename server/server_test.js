@@ -1,4 +1,6 @@
+jest.mock('./connection');
 const Connection = require('./connection');
+
 const Server = require('./server');
 const WebSocket = require('ws');
 const http = require('http');
@@ -48,8 +50,31 @@ describe('default port configuration', () => {
       done();
     });
   });
+});
 
-  // TODO: Add test for ws connections building a new Connection.
+describe('websockets connection handling', () => {
+  let connectionMadeWithWs;
+
+  beforeEach(() => {
+    connectionMadeWithWs = undefined;
+    Connection.mockImplementation((ws) => { connectionMadeWithWs = ws; });
+    selfTidyingServer = new Server();
+    selfTidyingServer.start();
+  });
+
+  afterEach(() => {
+    Connection.mockRestore();
+  });
+
+  test('connection initialized', (done) => {
+    expect(connectionMadeWithWs).not.toBeDefined();
+    const ws = new WebSocket('ws://localhost:3000/');
+    ws.on('open', () => {
+      expect(connectionMadeWithWs).toBeDefined();
+      ws.close();
+      done();
+    });
+  });
 });
 
 /**
