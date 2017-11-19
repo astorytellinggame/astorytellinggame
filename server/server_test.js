@@ -1,5 +1,5 @@
 jest.mock('./connection');
-const Connection = require('./connection');
+const MockConnection = require('./connection');
 
 const Server = require('./server');
 const WebSocket = require('ws');
@@ -57,13 +57,13 @@ describe('websockets connection handling', () => {
 
   beforeEach(() => {
     connectionMadeWithWs = undefined;
-    Connection.mockImplementation((ws) => { connectionMadeWithWs = ws; });
+    MockConnection.mockImplementation((ws) => { connectionMadeWithWs = ws; });
     selfTidyingServer = new Server();
     selfTidyingServer.start();
   });
 
   afterEach(() => {
-    Connection.mockRestore();
+    MockConnection.mockRestore();
   });
 
   test('connection initialized', (done) => {
