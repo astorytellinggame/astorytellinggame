@@ -1,11 +1,14 @@
 class Game {
   constructor() {
-    this.players = new Set;
+    /**
+     * @private {!Array<!Player>}
+     */
+    this.players_ = new Set;
   }
 
   addPlayer(joiningPlayer) {
-    this.players.add(joiningPlayer);
-    this.players.forEach((player) => {
+    this.players_.add(joiningPlayer);
+    this.players_.forEach((player) => {
       player.notifyPlayerJoined(joiningPlayer);
     });
   }
