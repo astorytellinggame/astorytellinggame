@@ -86,4 +86,33 @@ describe('with single mock ws', () => {
       '{"topic":"foo","data":{"bar":"baz"}}'
     );
   });
+
+  describe('handleAuth_', () => {
+    let c;
+    let pretendMessageReceived;
+
+    beforeEach(() => {
+      MockPlayer.mockClear();
+      c = new Connection(ws, lobby);
+      expect(ws.on.mock.calls).toHaveLength(1);
+      pretendMessageReceived = messageStr => {
+        ws.on.mock.calls[0][1](messageStr);
+        return Promise.resolve();
+      };
+    });
+
+    it('works', async () => {
+      expect(MockPlayer.mock.instances).toHaveLength(0);
+      await pretendMessageReceived('{"topic":"auth","data":{"name":"Alice"}}');
+      expect(MockPlayer.mock.instances).toHaveLength(1);
+    });
+
+    it('ignores subsequent auth messages', async () => {
+      expect(MockPlayer.mock.instances).toHaveLength(0);
+      await pretendMessageReceived('{"topic":"auth","data":{"name":"Alice"}}');
+      await pretendMessageReceived('{"topic":"auth","data":{"name":"Bob"}}');
+      expect(MockPlayer.mock.instances).toHaveLength(1);
+      expect(MockPlayer.mock.calls[0][1]).toEqual('Alice');
+    });
+  });
 });

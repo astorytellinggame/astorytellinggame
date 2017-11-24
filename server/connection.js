@@ -13,7 +13,6 @@ class Connection {
    */
   constructor(ws, lobby) {
     this.ws_ = ws;
-    this.ws_.on('message', this.handleMessage_.bind(this));
 
     this.lobby_ = lobby;
 
@@ -24,7 +23,10 @@ class Connection {
      */
     this.waitedTopics_ = new Map();
 
+    this.ws_.on('message', this.handleMessage_.bind(this));
+
     this.notify('welcome', {});
+    this.waitForTopic('auth').then(data => this.handleAuth_(data));
   }
 
   /**
@@ -57,6 +59,16 @@ class Connection {
     return new Promise(resolve => {
       subscribers.push(resolve);
     });
+  }
+
+  handleAuth_(data) {
+    if (typeof data.name != 'string' || data.name.length == 0) {
+      this.waitForTopic('auth', this.handleAuth_.bind(this));
+      process.env.DEBUG &&
+        console.log('handleAuth_ did not receive a name. Waiting again.');
+      return;
+    }
+    const p = new Player(this, data.name);
   }
 
   /**
