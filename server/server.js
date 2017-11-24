@@ -3,8 +3,9 @@ const Hapi = require('hapi');
 const Lobby = require('./lobby');
 const WebSocket = require('ws');
 const fs = require('fs');
-const path = require('path');
 const inert = require('inert');
+const path = require('path');
+const { debug } = require('./log');
 
 class Server {
   /**
@@ -30,10 +31,7 @@ class Server {
       handler: { file: this.handleStaticContentRequest_ }
     });
     await this.server_.start();
-    process.env.DEBUG &&
-      console.log(
-        `astorytellinggame server running at :${this.server_.info.uri}`
-      );
+    debug(`astorytellinggame server running at: ${this.server_.info.uri}`);
   }
 
   /**
@@ -50,7 +48,7 @@ class Server {
    * @private
    */
   handleWebSocketsConnection_(ws) {
-    process.env.DEBUG && console.log('Client connected');
+    debug('Client connected');
     new Connection(ws);
   }
 

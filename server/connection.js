@@ -1,4 +1,5 @@
 const Player = require('./player');
+const { debug } = require('./log');
 
 /**
  * The Connection class that is created and associated with every incoming
@@ -64,8 +65,7 @@ class Connection {
   handleAuth_(data) {
     if (typeof data.name != 'string' || data.name.length == 0) {
       this.waitForTopic('auth', this.handleAuth_.bind(this));
-      process.env.DEBUG &&
-        console.log('handleAuth_ did not receive a name. Waiting again.');
+      debug('handleAuth_ did not receive a name. Waiting again.');
       return;
     }
     const p = new Player(this, data.name);
