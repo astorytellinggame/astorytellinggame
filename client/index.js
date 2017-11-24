@@ -1,4 +1,4 @@
-const ws = new WebSocket('ws://localhost:3000/');
+const ws = new WebSocket(`ws://${window.location.host}/`);
 ws.onmessage = message => {
   let data;
   try {
