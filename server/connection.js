@@ -15,10 +15,6 @@ class Connection {
     this.ws_ = ws;
     this.lobby_ = lobby;
     this.notify('welcome', {});
-
-    // Create a new player on connect for now. TODO: Add auth to reconnect to
-    // existing player.
-    new Player();
   }
 
   /**
