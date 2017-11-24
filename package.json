@@ -4,10 +4,10 @@
   "description": "A Storytelling Game.",
   "scripts": {
     "format": "prettier --single-quote --write '{client,server,integration}/**/*.js'",
-    "start": "webpack client/index.js client-dist/bundle.js && DEBUG=1 node index.js",
-    "test": "webpack client/index.js client-dist/bundle.js && jest --testMatch='**/*_test.js'",
-    "test-watch": "webpack client/index.js client-dist/bundle.js && jest --testMatch='**/*_test.js' --watch",
-    "test-inspect": "webpack client/index.js client-dist/bundle.js && node --inspect-brk ./node_modules/.bin/jest --runInBand --testMatch='**/*_test.js'"
+    "start": "webpack && DEBUG=1 node index.js",
+    "test": "webpack && jest --testMatch='**/*_test.js'",
+    "test-watch": "webpack && jest --testMatch='**/*_test.js' --watch",
+    "test-inspect": "webpack && node --inspect-brk ./node_modules/.bin/jest --runInBand --testMatch='**/*_test.js'"
   },
   "main": "index.js",
   "repository": {
