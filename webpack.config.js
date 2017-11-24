@@ -1,7 +1,10 @@
+const path = require('path');
+
 module.exports = {
   entry: './client/index.js',
   output: {
-    filename: './client-dist/bundle.js'
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'client-dist')
   },
   module: {
     rules: [
