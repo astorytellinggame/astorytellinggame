@@ -69,6 +69,7 @@ class Connection {
       return;
     }
     const p = new Player(this, data.name);
+    this.notify('playerCreated', {});
   }
 
   /**

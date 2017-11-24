@@ -102,9 +102,14 @@ describe('with single mock ws', () => {
     });
 
     it('works', async () => {
+      ws.send.mockClear();
       expect(MockPlayer.mock.instances).toHaveLength(0);
       await pretendMessageReceived('{"topic":"auth","data":{"name":"Alice"}}');
       expect(MockPlayer.mock.instances).toHaveLength(1);
+      expect(ws.send.mock.calls).toHaveLength(1);
+      expect(ws.send.mock.calls[0][0]).toBe(
+        '{"topic":"playerCreated","data":{}}'
+      );
     });
 
     it('ignores subsequent auth messages', async () => {
