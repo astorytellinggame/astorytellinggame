@@ -1,5 +1,7 @@
 jest.mock('./connection');
 const MockConnection = require('./connection');
+jest.mock('./lobby');
+const MockLobby = require('./lobby');
 
 const Server = require('./server');
 const WebSocket = require('ws');
@@ -7,6 +9,10 @@ const http = require('http');
 const { fail } = require('assert');
 
 let selfTidyingServer; // to force cleanup
+
+beforeEach(() => {
+  MockLobby.mockClear();
+});
 
 afterEach(() => {
   selfTidyingServer && selfTidyingServer.stop();
@@ -49,6 +55,10 @@ describe('default port configuration', () => {
       ws.close();
       done();
     });
+  });
+
+  test('creates basic lobby', () => {
+    expect(MockLobby.mock.instances).toHaveLength(1);
   });
 });
 

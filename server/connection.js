@@ -1,3 +1,5 @@
+const Player = require('./player');
+
 /**
  * The Connection class that is created and associated with every incoming
  * WebSocket connection. Responsible for performing the auth handshake with the
@@ -7,17 +9,23 @@
 class Connection {
   /**
    * @param {!WebSocket} ws
+   * @param {!Lobby} lobby
    */
-  constructor(ws) {
-    this.ws = ws;
+  constructor(ws, lobby) {
+    this.ws_ = ws;
+    this.lobby_ = lobby;
     this.notify('welcome', {});
+
+    // Create a new player on connect for now. TODO: Add auth to reconnect to
+    // existing player.
+    new Player();
   }
 
   /**
    * Closes the WebSocket.
    */
   detach() {
-    this.ws.close();
+    this.ws_.close();
   }
 
   /**
@@ -25,7 +33,7 @@ class Connection {
    * @param {!Object} message
    */
   notify(topic, message) {
-    this.ws.send(JSON.stringify({ topic, message }));
+    this.ws_.send(JSON.stringify({ topic, message }));
   }
 }
 

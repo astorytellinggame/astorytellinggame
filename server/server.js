@@ -1,4 +1,5 @@
 const Connection = require('./connection');
+const Lobby = require('./lobby');
 const WebSocket = require('ws');
 const fs = require('fs');
 const http = require('http');
@@ -18,6 +19,7 @@ class Server {
    */
   start() {
     this.server_ = http.createServer(this.handleHttpRequest_.bind(this));
+    this.lobby_ = new Lobby();
     const wss = new WebSocket.Server({ server: this.server_ });
     wss.on('connection', this.handleWebSocketsConnection_.bind(this));
     this.server_.listen(this.port, (err) => console.log);
