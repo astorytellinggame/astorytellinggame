@@ -7,7 +7,7 @@ Local development build
 ```
 git clone git@github.com:astorytellinggame/astorytellinggame.git
 cd astorytellinggame
-node index.js # Set PORT env to override port (default: 3000)
+npm start # Set PORT env to override port (default: 3000)
 ```
 
 Testing
@@ -15,8 +15,9 @@ Testing
 
 ```
 npm install
-npm test # Run without debugger
+npm test             # Run without debugger
 npm run test-inspect # Run with debugger (--inspect-brk)
+npm run test-watch   # Run file change watcher
 ```
 
 Architecture
