@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A Storytelling Game.",
   "scripts": {
+    "format": "prettier --single-quote --write '{client,server,integration}/**/*.js'",
     "start": "webpack client/index.js client-dist/bundle.js && DEBUG=1 node index.js",
     "test": "webpack client/index.js client-dist/bundle.js && jest --testMatch='**/*_test.js'",
     "test-watch": "webpack client/index.js client-dist/bundle.js && jest --testMatch='**/*_test.js' --watch",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme",
   "devDependencies": {
     "jest": "^21.2.1",
+    "prettier": "^1.8.2",
     "puppeteer": "^0.13.0",
     "webpack": "^3.8.1"
   },
