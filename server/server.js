@@ -4,6 +4,7 @@ const Lobby = require('./lobby');
 const WebSocket = require('ws');
 const fs = require('fs');
 const path = require('path');
+const inert = require('inert');
 
 class Server {
   /**
@@ -22,7 +23,7 @@ class Server {
     this.lobby_ = new Lobby();
     const wss = new WebSocket.Server({ server: this.server_.listener });
     wss.on('connection', this.handleWebSocketsConnection_.bind(this));
-    await this.server_.register({ plugin: require('inert') });
+    await this.server_.register({ plugin: inert });
     this.server_.route({
       method: 'GET',
       path: '/{filename?}',
@@ -55,7 +56,7 @@ class Server {
 
   /**
    * Handles HTTP requests. For serving static site content.
-   * @param {!Hapi} server
+   * @param {!Hapi.Request} request Created internally for each incoming request.
    * @private
    */
   handleStaticContentRequest_(request) {
