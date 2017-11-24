@@ -1,9 +1,10 @@
 const Connection = require('./connection');
+const Hapi = require('hapi');
 const Lobby = require('./lobby');
 const WebSocket = require('ws');
 const fs = require('fs');
-const http = require('http');
 const path = require('path');
+const inert = require('inert');
 
 class Server {
   /**
@@ -17,14 +18,22 @@ class Server {
   /**
    * Starts the server.
    */
-  start() {
-    this.server_ = http.createServer(this.handleHttpRequest_.bind(this));
+  async start() {
+    this.server_ = new Hapi.Server({ port: this.port });
     this.lobby_ = new Lobby();
-    const wss = new WebSocket.Server({ server: this.server_ });
+    const wss = new WebSocket.Server({ server: this.server_.listener });
     wss.on('connection', this.handleWebSocketsConnection_.bind(this));
-    this.server_.listen(this.port, err => console.log);
+    await this.server_.register({ plugin: inert });
+    this.server_.route({
+      method: 'GET',
+      path: '/{filename?}',
+      handler: { file: this.handleStaticContentRequest_ }
+    });
+    await this.server_.start();
     process.env.DEBUG &&
-      console.log(`astorytellinggame server started on :${this.port}`);
+      console.log(
+        `astorytellinggame server running at :${this.server_.info.uri}`
+      );
   }
 
   /**
@@ -32,9 +41,7 @@ class Server {
    * @return {!Promise} Resolves when all pending responses are flushed.
    */
   stop() {
-    return new Promise(resolve => {
-      this.server_.close(resolve);
-    });
+    return this.server_.stop();
   }
 
   /**
@@ -48,59 +55,14 @@ class Server {
   }
 
   /**
-   * Handles plain HTTP requests. For serving static site content.
-   * @param {!http.IncomingMessage} request
-   * @param {!http.ServerResponse} response
+   * Handles HTTP requests. For serving static site content.
+   * @param {!Hapi.Request} request Created internally for each incoming request.
    * @private
    */
-  handleHttpRequest_(request, response) {
-    process.env.DEBUG &&
-      console.log(`Serving static file request: ${request.url}`);
-    switch (request.url) {
-      case '/':
-        this.serveFile_('index.html', 'text/html', response);
-        break;
-      case '/bundle.js':
-        this.serveFile_('bundle.js', 'text/javascript', response);
-        break;
-      case '/favicon.ico':
-        this.serveFile_('favicon.ico', 'image/x-icon', response);
-        break;
-      default:
-        process.env.DEBUG && console.log(`Unexpected request: ${request.url}`);
-        this.serve404_(response);
-    }
-  }
-
-  /**
-   * @param {http.ServerResponse} response Output will be flushed to this.
-   * @private
-   */
-  serve404_(response) {
-    response.writeHead(404);
-    response.end();
-  }
-
-  /**
-   * Serves the file in client-dist to the response and closes the response.
-   * @param {string} filename The filename (relative to client-dist) to serve.
-   * @param {string} contentType e.g., 'text/javascript'
-   * @param {http.ServerResponse} response Output will be flushed to this.
-   * @private
-   */
-  serveFile_(filename, contentType, response) {
-    fs.readFile(
-      path.resolve(__dirname, `../client-dist/${filename}`),
-      (err, content) => {
-        if (err) {
-          console.error(err);
-          this.serve404_(response);
-          return;
-        }
-        response.writeHead(200, { 'Content-Type': contentType });
-        response.end(content, 'utf-8');
-      }
-    );
+  handleStaticContentRequest_(request) {
+    const staticFileDir = path.join(__dirname, '../client-dist');
+    const file = request.params.filename || 'index.html';
+    return `${staticFileDir}/${file}`;
   }
 }
 

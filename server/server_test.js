@@ -21,23 +21,25 @@ afterEach(() => {
 
 test('custom port configuration', done => {
   selfTidyingServer = new Server(3001);
-  selfTidyingServer.start();
-  verifyHttpResponse(3001).then(() => {
-    http
-      .get('http://localhost:3000/', res => {
-        fail('Did not expect a server to respond on :3000.');
-      })
-      .on('error', e => {
-        expect(e.code).toBe('ECONNREFUSED');
-        done();
-      });
-  });
+  selfTidyingServer
+    .start()
+    .then(() => verifyHttpResponse(3001))
+    .then(() => {
+      http
+        .get('http://localhost:3000/', res => {
+          fail('Did not expect a server to respond on :3000.');
+        })
+        .on('error', e => {
+          expect(e.code).toBe('ECONNREFUSED');
+          done();
+        });
+    });
 });
 
 describe('default port configuration', () => {
   beforeEach(() => {
     selfTidyingServer = new Server();
-    selfTidyingServer.start();
+    return selfTidyingServer.start();
   });
 
   test('serves basic traffic', () => {
@@ -73,7 +75,7 @@ describe('websockets connection handling', () => {
       connectionMadeWithWs = ws;
     });
     selfTidyingServer = new Server();
-    selfTidyingServer.start();
+    return selfTidyingServer.start();
   });
 
   afterEach(() => {
