@@ -22,7 +22,7 @@ class Server {
     this.lobby_ = new Lobby();
     const wss = new WebSocket.Server({ server: this.server_ });
     wss.on('connection', this.handleWebSocketsConnection_.bind(this));
-    this.server_.listen(this.port, (err) => console.log);
+    this.server_.listen(this.port, err => console.log);
     process.env.DEBUG &&
       console.log(`astorytellinggame server started on :${this.port}`);
   }
@@ -32,8 +32,8 @@ class Server {
    * @return {!Promise} Resolves when all pending responses are flushed.
    */
   stop() {
-    return new Promise((resolve) => {
-      this.server_.close(resolve)
+    return new Promise(resolve => {
+      this.server_.close(resolve);
     });
   }
 
@@ -54,8 +54,9 @@ class Server {
    * @private
    */
   handleHttpRequest_(request, response) {
-    process.env.DEBUG && console.log(`Serving static file request: ${request.url}`);
-    switch(request.url) {
+    process.env.DEBUG &&
+      console.log(`Serving static file request: ${request.url}`);
+    switch (request.url) {
       case '/':
         this.serveFile_('index.html', 'text/html', response);
         break;
@@ -98,7 +99,8 @@ class Server {
         }
         response.writeHead(200, { 'Content-Type': contentType });
         response.end(content, 'utf-8');
-      });
+      }
+    );
   }
 }
 

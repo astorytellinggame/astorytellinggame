@@ -3,12 +3,12 @@ class Game {
     /**
      * @private {!Array<!Player>}
      */
-    this.players_ = new Set;
+    this.players_ = new Set();
   }
 
   addPlayer(joiningPlayer) {
     this.players_.add(joiningPlayer);
-    this.players_.forEach((player) => {
+    this.players_.forEach(player => {
       player.notifyPlayerJoined(joiningPlayer);
     });
   }

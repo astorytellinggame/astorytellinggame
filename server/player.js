@@ -29,7 +29,7 @@ class Player {
    * @param {!Player} joiningPlayer
    */
   notifyPlayerJoined(joiningPlayer) {
-    this.connection_.notify('playerJoined', { 'name': joiningPlayer.name });
+    this.connection_.notify('playerJoined', { name: joiningPlayer.name });
   }
 }
 

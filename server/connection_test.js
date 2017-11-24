@@ -33,20 +33,21 @@ describe('with single mock ws', () => {
     beforeEach(() => {
       c = new Connection(ws, lobby);
       expect(ws.on.mock.calls).toHaveLength(1);
-      pretendMessageReceived = (messageStr) => {
+      pretendMessageReceived = messageStr => {
         ws.on.mock.calls[0][1](messageStr);
         return Promise.resolve();
       };
     });
 
-    test('basic wait', (done) => {
+    test('basic wait', done => {
       c.waitForTopic('foo').then(done);
       pretendMessageReceived('{"topic":"foo"}');
     });
 
-    test('ignores unrelated messages', (done) => {
-      c.waitForTopic('foo').then(
-        () => assert.fail('Should not receive unrelated message.'));
+    test('ignores unrelated messages', done => {
+      c
+        .waitForTopic('foo')
+        .then(() => assert.fail('Should not receive unrelated message.'));
       c.waitForTopic('bar').then(done);
       pretendMessageReceived('{"topic":"bar"}');
     });
@@ -79,9 +80,10 @@ describe('with single mock ws', () => {
 
   test('notify', () => {
     const c = new Connection(ws, lobby);
-    c.notify('foo', {'bar': 'baz'});
+    c.notify('foo', { bar: 'baz' });
     expect(ws.send.mock.calls).toHaveLength(2);
-    expect(ws.send.mock.calls[1][0])
-      .toBe('{"topic":"foo","data":{"bar":"baz"}}');
+    expect(ws.send.mock.calls[1][0]).toBe(
+      '{"topic":"foo","data":{"bar":"baz"}}'
+    );
   });
 });

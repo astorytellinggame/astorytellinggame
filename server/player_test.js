@@ -35,5 +35,5 @@ test('notifyPlayerJoined', () => {
   p.notifyPlayerJoined(new Player(new MockConnection(), 'Charlie'));
   expect(c.notify.mock.calls).toHaveLength(1);
   expect(c.notify.mock.calls[0][0]).toBe('playerJoined');
-  expect(c.notify.mock.calls[0][1]).toEqual({ 'name': 'Charlie' });
+  expect(c.notify.mock.calls[0][1]).toEqual({ name: 'Charlie' });
 });

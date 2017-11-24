@@ -17,6 +17,7 @@ test('smoke', async () => {
   const page = await browser.newPage();
   await page.goto('http://localhost:3000/');
   await page.waitForFunction(
-    'document.getElementById("done").style.display == ""');
+    'document.getElementById("done").style.display == ""'
+  );
   await browser.close();
 });

@@ -54,7 +54,7 @@ class Connection {
       subscribers = [];
       this.waitedTopics_.set(topic, subscribers);
     }
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       subscribers.push(resolve);
     });
   }
@@ -67,7 +67,7 @@ class Connection {
     let message;
     try {
       message = JSON.parse(messageStr);
-    } catch(e) {
+    } catch (e) {
       if (e instanceof SyntaxError) {
         console.log(`Failed to parse message: ${messageStr}`);
         return;
@@ -76,10 +76,10 @@ class Connection {
     }
     const subscribers = this.waitedTopics_.get(message.topic);
     if (subscribers) {
-      subscribers.forEach((subscriber) => subscriber(message.data));
+      subscribers.forEach(subscriber => subscriber(message.data));
       this.waitedTopics_.set(message.topic, []);
     }
-  };
+  }
 }
 
 module.exports = Connection;

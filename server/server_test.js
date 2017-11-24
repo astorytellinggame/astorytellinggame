@@ -19,16 +19,18 @@ afterEach(() => {
   selfTidyingServer = null;
 });
 
-test('custom port configuration', (done) => {
+test('custom port configuration', done => {
   selfTidyingServer = new Server(3001);
   selfTidyingServer.start();
   verifyHttpResponse(3001).then(() => {
-    http.get('http://localhost:3000/', (res) => {
-      fail('Did not expect a server to respond on :3000.');
-    }).on('error', (e) => {
-      expect(e.code).toBe('ECONNREFUSED');
-      done();
-    });
+    http
+      .get('http://localhost:3000/', res => {
+        fail('Did not expect a server to respond on :3000.');
+      })
+      .on('error', e => {
+        expect(e.code).toBe('ECONNREFUSED');
+        done();
+      });
   });
 });
 
@@ -49,7 +51,7 @@ describe('default port configuration', () => {
     });
   });
 
-  test('basic webserver connection', (done) => {
+  test('basic webserver connection', done => {
     const ws = new WebSocket('ws://localhost:3000/');
     ws.on('open', () => {
       ws.close();
@@ -67,7 +69,9 @@ describe('websockets connection handling', () => {
 
   beforeEach(() => {
     connectionMadeWithWs = undefined;
-    MockConnection.mockImplementation((ws) => { connectionMadeWithWs = ws; });
+    MockConnection.mockImplementation(ws => {
+      connectionMadeWithWs = ws;
+    });
     selfTidyingServer = new Server();
     selfTidyingServer.start();
   });
@@ -76,7 +80,7 @@ describe('websockets connection handling', () => {
     MockConnection.mockRestore();
   });
 
-  test('connection initialized', (done) => {
+  test('connection initialized', done => {
     expect(connectionMadeWithWs).not.toBeDefined();
     const ws = new WebSocket('ws://localhost:3000/');
     ws.on('open', () => {
@@ -95,8 +99,8 @@ describe('websockets connection handling', () => {
  * @return {!Promise} Resolves after verifying HTTP response code 200.
  */
 const verifyHttpResponse = (port, path = '/', expectedStatusCode = 200) => {
-  return new Promise((resolve) => {
-    http.get(`http://localhost:${port}${path}`, (res) => {
+  return new Promise(resolve => {
+    http.get(`http://localhost:${port}${path}`, res => {
       const { statusCode } = res;
       expect(statusCode).toBe(expectedStatusCode);
       resolve();
