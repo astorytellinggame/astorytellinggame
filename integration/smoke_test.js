@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
 let server;
 
 beforeAll(() => {
-  server = new Server();
+  server = new Server(4000);
   server.start();
 });
 
@@ -15,7 +15,7 @@ afterAll(() => {
 test('smoke', async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto('http://localhost:3000/');
+  await page.goto('http://localhost:4000/');
   await page.waitForFunction(
     'document.getElementById("done").style.display == ""'
   );
