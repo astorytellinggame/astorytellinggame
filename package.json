@@ -24,9 +24,15 @@
   },
   "homepage": "https://github.com/astorytellinggame/astorytellinggame#readme",
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "concurrently": "^3.5.1",
     "jest": "^21.2.1",
     "prettier": "^1.8.2",
     "puppeteer": "^0.13.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "webpack": "^3.8.1"
   },
   "dependencies": {
