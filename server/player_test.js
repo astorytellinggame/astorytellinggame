@@ -1,12 +1,12 @@
-jest.mock('./connection');
-const MockConnection = require('./connection');
+jest.mock('../lib/connection');
+const MockConnection = require('../lib/connection');
 
 const Player = require('./player');
 
 test('constructor works', () => {
   const c = new MockConnection();
-  const p = new Player('c', 'Bob');
-  expect(c.notify.mock.calls).toHaveLength(0);
+  const p = new Player(c, 'Bob');
+  expect(c.sentNotifications).toHaveLength(0);
 });
 
 test('attachConnection', () => {
@@ -14,26 +14,26 @@ test('attachConnection', () => {
   const c2 = new MockConnection();
   const c3 = new MockConnection();
   const p = new Player(c1, 'Bob');
-  expect(c1.detach.mock.calls).toHaveLength(0);
-  expect(c2.detach.mock.calls).toHaveLength(0);
+  expect(c1.detached).toBe(false);
+  expect(c2.detached).toBe(false);
 
   p.attachConnection(c2);
-  expect(c1.detach.mock.calls).toHaveLength(1);
-  expect(c2.detach.mock.calls).toHaveLength(0);
+  expect(c1.detached).toBe(true);
+  expect(c2.detached).toBe(false);
 
   p.attachConnection(c3);
-  expect(c1.detach.mock.calls).toHaveLength(1);
-  expect(c2.detach.mock.calls).toHaveLength(1);
-  expect(c3.detach.mock.calls).toHaveLength(0);
+  expect(c1.detached).toBe(true);
+  expect(c2.detached).toBe(true);
+  expect(c3.detached).toBe(false);
 });
 
 test('notifyPlayerJoined', () => {
   const c = new MockConnection();
   const p = new Player(c, 'Bob');
-  expect(c.notify.mock.calls).toHaveLength(0);
+  expect(c.sentNotifications).toHaveLength(0);
 
   p.notifyPlayerJoined(new Player(new MockConnection(), 'Charlie'));
-  expect(c.notify.mock.calls).toHaveLength(1);
-  expect(c.notify.mock.calls[0][0]).toBe('playerJoined');
-  expect(c.notify.mock.calls[0][1]).toEqual({ name: 'Charlie' });
+  expect(c.sentNotifications).toHaveLength(1);
+  expect(c.sentNotifications[0].topic).toBe('playerJoined');
+  expect(c.sentNotifications[0].data).toEqual({ name: 'Charlie' });
 });

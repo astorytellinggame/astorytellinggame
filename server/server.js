@@ -1,6 +1,6 @@
-const Connection = require('./connection');
 const Hapi = require('hapi');
 const Lobby = require('./lobby');
+const ServerConnection = require('./server_connection');
 const WebSocket = require('ws');
 const fs = require('fs');
 const inert = require('inert');
@@ -49,7 +49,7 @@ class Server {
    */
   handleWebSocketsConnection_(ws) {
     debug('Client connected');
-    new Connection(ws);
+    new ServerConnection(ws);
   }
 
   /**

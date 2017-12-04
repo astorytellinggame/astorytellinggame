@@ -1,5 +1,5 @@
-jest.mock('./connection');
-const MockConnection = require('./connection');
+jest.mock('./server_connection');
+const MockServerConnection = require('./server_connection');
 jest.mock('./lobby');
 const MockLobby = require('./lobby');
 
@@ -71,7 +71,7 @@ describe('websockets connection handling', () => {
 
   beforeEach(() => {
     connectionMadeWithWs = undefined;
-    MockConnection.mockImplementation(ws => {
+    MockServerConnection.mockImplementation(ws => {
       connectionMadeWithWs = ws;
     });
     selfTidyingServer = new Server();
@@ -79,7 +79,7 @@ describe('websockets connection handling', () => {
   });
 
   afterEach(() => {
-    MockConnection.mockRestore();
+    MockServerConnection.mockRestore();
   });
 
   test('connection initialized', done => {
